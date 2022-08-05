@@ -1,20 +1,21 @@
-const { fetchMyIp, fetchCoordsByIP, fetchISSFlyOverTimes } = require('./iss');
+const { nextISSTimesForMyLocation } = require('./iss');
 
-fetchMyIp((error, ip) => {
+nextISSTimesForMyLocation((error, passTimes) => {
   if (error) {
-    console.log("It didn't work!", error);
-    return;
+    return console.log("It didn't work!", error);
+  }
+  
+  for (let pass of passTimes) {
+    let date = pass.risetime;
+    date = new Date();
+
+    console.log(`Next pass at ${date} for ${pass.duration} seconds!`);
   }
 
-  fetchCoordsByIP(ip, (error, coords) => {
-    // console.log('error:', error);
-    // console.log('coords:', coords);
-
-    fetchISSFlyOverTimes(coords, (error, data) => {
-      console.log('error:', error);
-      console.log('data:', data);
   
-    });
-  });
 });
 
+// Practice from node repl
+// > date = new Date()
+// > date.toString()
+// 'Thu Aug 04 2022 17:54:07 GMT-0600 (Mountain Daylight Time)'
